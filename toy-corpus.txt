@@ -1,0 +1,61 @@
+﻿"The quick brown fox jumps over the lazy dog"
+
+toy_corpus = [
+"The fox jumps over the dog",
+"The fox is very clever and quick",
+"The dog is slow and lazy",
+"The cat is smarter than the fox and the dog",
+"Python is an excellent programming language",
+"Java and Ruby are other programming languages",
+"Python and Java are very popular programming languages",
+"Python programs are smaller than Java programs"
+]
+
+
+"The quick brown fox jumps over the lazy dog"
+
+
+"The fox jumps over the dog and the Python",
+
+"The fox is very clever and quick and the dog is slow and lazy",
+
+"The cat is smarter than the fox and the dog and her name is Ruby",
+
+"Python is an excellent programming language and Python programs are smaller than Java programs"
+
+"Java and Ruby are other programming languages for Web Site development and are not dogs",
+
+"Python and Java are very popular programming languages for Data Science",
+
+-----------------
+
+
+A tablet computer is a mobile personal computer that is primarily 
+operated by touching the screen .
+
+A laptop is a portable personal computer with a clamshell form factor, suitable
+for mobile use .
+
+The movie streaming option will work on tablets allowing users watching the
+latest dramas and comedies .
+
+Comedy is a genre of film in which the main emphasis is on humour .
+
+George’s favourites are dramas and action films .
+
+According to critics, Snatch is one of the best action - comedy movies of 00s .
+
+------
+Context vocabulary: computer, screen, personal, drama, comedy, action
+
+
+
+computer screen personal drama comedy action
+tablet 2 1 1 1 1 0
+laptop 1 1 1 0 0 0
+movie 0 0 0 1 1 1
+film 0 0 0 1 1 1
+
+
+Figure 2.8: A small toy corpus of six sentences, a context vocabulary with the corresponding term-context matrix. Each vector element represents the raw co-occurrence
+frequency between t

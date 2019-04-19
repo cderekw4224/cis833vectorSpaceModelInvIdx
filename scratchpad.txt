@@ -1,0 +1,114 @@
+Week 4	Tues. 4/25	Lecture (Pandu)	Evaluation methods & NDCG
+
+In-class lecture notes:
+PPT | PDF/6 | PDF/1
+Coursera content:
+Videos: "Result Summaries"
+Slides: PPT | PDF/6 | PDF/1
+IIR chapter 8
+MG section 4.5
+MIR chapter 3
+
+20-d-0_
+
+
+http://bit.ly/ksuderekc-SIGAI-Yampolskiy
+
+
+freq_word_Q[:] = 
+ [[u'investig', 1], ['transfer', 1], [u'gener', 1], ['shock', 1], ['effect', 1], [u'bodi', 1], ['heat', 1], ['blunt', 1], [u'vortic', 1]] 
+
+
+
+  "The fox jumps over the dog and the Python",
+	"The fox is very clever and quick and 
+the dog is slow and lazy",.
+	"The cat is smarter than the fox 
+and her name is Ruby",
+	"Python is an excellent programming language and 
+Python programs are smaller than Java programs"
+	"Java and Ruby are other programming languages 
+for Web Site development and are also not for dogs",
+  "Python and Java are very popular programming 
+languages for Data Science", internal
+
+
+Q: jumps Python dog 
+
+
+
+
+1) "The quick brown fox jumps 
+over the lazy dog" "The fox jumps over the dog and the Python",
+
+2)	"The fox is very clever and quick and 
+the dog is slow and lazy",.
+
+3)	"The cat is smarter than the fox 
+and her name is Ruby",
+
+4) "excellent programming language!?!?" 	"Python is an excellent programming language and 
+Python programs are smaller than Java programs"
+
+5)	"Java and Ruby are other programming languages 
+for Web Site development",
+
+6)  "Python and Java are very popular programming 
+languages for Data Science  and are also not for dogs",
+
+
+
+Q: dog Python lazy 
+
+
+
+Wed 30 Jan 2019
+Wed 20 Feb 2019
+Wed 20 Mar 2019
+Wed 10 Apr 2019
+Wed 01 May 2019
+
+
+
+banazir   [16 hours ago]
+Has the talk announcement gone out in http://ksucis.slack.com?  Please post it in #announcements and ask @weeser for a channel tag.  I suggest mentioning it in #acm, and you should definitely cross-post it to #acm-sigai.
+
+
+@derekc: Can you please make the FB events under the SIGAI page?  One for Roman's talk, one for the workshop. Use the above materials. Thanks!
+
+
+
+https://www.facebook.com/groups/kstateacmsigai/?fref=mentions
+
+
+Professional MBA Program, Kansas State University, Division of Biology at Kansas State University, Kansas State University Polytechnic Campus, Kansas State University IEEE,  Kansas State University Mechanical & Nuclear Engineering, Beta Theta Pi - Kansas State University, Kansas State University Chemical Engineering Department, Manhappenin' Magazine, 1 Million Cups Manhattan,  K-State Parents and Family Association, K-State College of Education, Kstatehds, K-State Ag, K-State Center for Engagement and Community Development,   K-State Biochemistry & Molecular Biophysics, K-State Department of Animal Sciences & Industry,  Manhattan24/7, K-State Department of History, K-State Sociology,     Political Science - Kansas State University, NRES at Kansas State University, K-State McNair Scholars, Wildcats Leadership for Life, K-State Polytechnic UAS Club,  , Manhattech, KSU Engineering Student Council, ,   K-State Blue Key, K-State Mortar Board - XIX Chapter, Kai-Fu Lee
+
+ K-State Alumni Association,  The Teaching & Learning Center of Kansas State University
+
+Manhattan Inventors Club
+@ManhattanInventorsClub
+Home
+
+
+
+q_tuple_words =  (u'investig', 'transfer', u'gener', 'shock', 'effect', u'bodi', 'heat', 'blunt', u'vortic')
+
+
+10:00am - "AI Safety: A Psychopathological Approach" - Vahid Behzadan
+
+10:45am - Panel Discussion: "Societal Impacts of A.I." -
+Roman Yampolskiy, Vahid Behzadan, William Hsu, Jessica Elmore, LaVerne Bitsie-Baldwin, Bruce Glymour
+
+11:30am - "Biases in Mechanical Turk Annotation and other Micro-work for Human-in-the-loop AI" - William Hsu
+
+
+https://l.facebook.com/l.php?u=https%3A%2F%2Fbit.ly%2FKSU-AI-Safety%3Ffbclid%3DIwAR3TtcmrzGKgWipl-BThjU67Rhz8iv7tz14SVTb-g9YkSO65mgZMataFsBc&h=AT1iP2infGEMEbKxNaxYQoqv9ZD1sZuQ6GHJ39OnN8cLrUiWes8ydok5KrN29gvcmFtURQK_vytT9_udAjtOeRAgJ66BeitCXnJjj5Axl4TyKNibMG57h871z5WtGmC7jqFJ
+
+bit.ly/KSU-AI-Safety
+
+
+
+career-data-sports-bb-sprtanlyKDDksu-bba
+
+career-data-sports-bb-sprtanlyKDDksu-mhs
+

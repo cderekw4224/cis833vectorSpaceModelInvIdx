@@ -1,0 +1,47 @@
+Dear students,
+
+For assignment 2, please remove stopwords, punctuation, and numbers, and perform stemming. 
+
+Please also note that the deadline is extended to September 28. Please make sure you submit on time. 
+
+Thank you,
+
+Cornelia
+
+-------------------------
+
+Dear students,
+
+Please calculate the IDF of each word based on the cranfield collection. 
+
+If a word appears in a query and does not appear in the cranfield collection, please set the IDF to 0. 
+
+Thanks,
+
+Cornelia
+
+------------------------
+
+
+cp awesome.txt something/
+
+**********************************
+
+64 84
+81 129
+15 18
+35 47
+30 37
+
+59 77
+68 114
+14 17
+33 45
+27 34
+
+58 77
+66 114
+14 17
+33 45
+26 35
+

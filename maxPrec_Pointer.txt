@@ -1,0 +1,299 @@
+    for qNum in range(len(queries_from_file)):
+        rankListPerQ = getRankListPerQ(qNum, queries_from_file,
+                                       postings, fdistCorpus)
+        for relvDocIdx in range(len(rankListPerQ)):
+            output_qid_docid.append((qNum + 1, rankListPerQ[relvDocIdx][0]))
+    for i in xrange(5):
+        print('output_qid_docid[', i, '] = ', output_qid_docid[i])
+
+    for n in xrange(5):
+        if output_qid_docid[n][0] == 1:
+            print('output_qid_docid[', n, '] = ', output_qid_docid[n])
+            print('qid = output_qid_docid[', n, '][0] = ',
+                  output_qid_docid[n][0])
+            print('docid = output_qid_docid[', n, '][1] = ',
+                  output_qid_docid[n][1], '\n')
+
+    sendToOutputFolder(dir_path_output, output_qid_docid)
+
+    relevance_from_file = getRelevance(dir_path_relevance)
+
+    print('\nrelevance_from_file[', 0, '] = ', relevance_from_file[0])
+    print()
+
+    for n in xrange(5):
+        if relevance_from_file[n][0] == 2:
+            print('relevance_from_file[', n, '] = ', relevance_from_file[n])
+            print('docid = ', relevance_from_file[n][1])
+
+    for r in xrange(5):
+        print('relevance_from_file[', r, '] = ', relevance_from_file[r])
+        print('qid = relevance_from_file[', r, '][0] = ',
+              relevance_from_file[r][0])
+        print('docid = relevance_from_file[', r, '][1] = ',
+              relevance_from_file[r][1], '\n')
+
+    qtyRelDocPerQ = getQtyRelDocPerQ(relevance_from_file)
+
+    STD_RECALL_LEVELS = [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+
+    TOP_X_DOCS = [10, 50, 100, 500]
+
+    global recPrec
+    recPrec = []
+	
+    rows = len(output_qid_docid)
+
+    cnt = 0
+    for i in range(len(output_qid_docid)):
+        if output_qid_docid[i][0] == 2:
+            cnt += 1
+
+    print('len of cnt = ', cnt)
+    print('output_qid_docid[cnt] = ', output_qid_docid[cnt])
+
+    if output_qid_docid[cnt] in relevance_from_file:
+        print('(2, ', cnt, ') in the Relevance File')
+
+    topDocIdx = 0  # TOP_X_DOCS = [10, 50, 100, 500]
+    relIdxRankN = 0  # rows = len(output_qid_docid) == 9402
+
+    for topDocIdx in range(len(TOP_X_DOCS)):  # {0, 1, 2, 3}
+        relIdxRankN = 0  # rows = len(output_qid_docid) == 9402
+        qNum = 0  # [0:wave, 1:shock, 2:blunt, . . ., 9:lift-drag]
+        recall = 0
+        precision = 0
+        for qNum in range(len(queries_from_file)):  # {0, 1, 2, . . ., 9}
+            n = 0  # [10: 0..9, 50: 0..49, 100: 0..99, 500: 0..499]
+            recall = 0
+            relCnt = 0
+#            print('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
+            print('qNum = ', qNum)
+#            print('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
+            for n in range(TOP_X_DOCS[topDocIdx]):  # {10, 50, 100, 500}
+                while output_qid_docid[relIdxRankN][0] != qNum + 1:
+                    relIdxRankN += 1
+                if output_qid_docid[relIdxRankN][0] == qNum + 1:
+                    if output_qid_docid[relIdxRankN] in relevance_from_file:
+                        rel = 1
+                        relCnt += 1
+                        recall = relCnt / qtyRelDocPerQ[qNum]
+                        precision = relCnt / (n + 1)
+                    else:
+                        rel = 0
+                        precision = relCnt / (n + 1)
+                    recPrec.append((TOP_X_DOCS[topDocIdx], qNum + 1, n + 1,
+                                    relIdxRankN,
+                                    output_qid_docid[relIdxRankN][0],
+                                    output_qid_docid[relIdxRankN][1],
+                                    rel, relCnt, recall, precision
+                                    ))
+                relIdxRankN += 1
+
+    print('len(output_qid_docid) =', len(output_qid_docid))
+
+    for relIdxRankN in range(5):
+        print('output_qid_docid[relIdxRankN][0] = output_qid_docid[', relIdxRankN, '][0] = ',
+              output_qid_docid[relIdxRankN][0])
+
+    print('len(recPrec) =', len(recPrec))
+
+    j = 0
+    for j in xrange(25):
+        print('recPrec[', j, '] = ', recPrec[j])
+
+    j = 0
+    for j in xrange((len(recPrec)-25), len(recPrec)):
+        print('recPrec[', j, '] = ', recPrec[j])
+
+    print('\n++++-----STARTING intPrec -----+++++')
+
+    intPrec = [[]]
+    intPrecIdx = 0
+    recPrecIdx = 0  # {0, 1, 2, . . ., 6599}
+    print('intPrecIdx = ', intPrecIdx)
+    print('recPrecIdx = ', recPrecIdx)
+
+    topDocIdx = 0  # {0, 1, 2, 3}
+    print('topDocIdx = ', topDocIdx)
+
+    for topDocIdx in range(len(TOP_X_DOCS)):  # {4}
+        numRowsPerQ = TOP_X_DOCS[topDocIdx]  # {10, 50, 100, 500}
+    #    numRowsPerTopDoc = numRowsPerQ * 10  # {100, 500, 1000, 5000}
+        qNum = 0  # [0:wave, 1:shock, 2:blunt, . . ., 9:lift-drag]
+
+        print('\n   ++++-----STARTING topDocIdx LOOP-----+++++')
+        print('   topDocIdx = ', topDocIdx)
+        print('   numRowsPerQ = ', numRowsPerQ)
+        print('   qNum = ', qNum)
+
+        for qNum in range(len(queries_from_file)):  # {0, 1, 2, . . ., 9}
+            firstRecPrecIdx = recPrecIdx
+            lastRecPrecIdx = recPrecIdx + (numRowsPerQ - 1)
+            pointer = firstRecPrecIdx  #  current high RECALL for qNum
+            sRL = 0
+
+            print('\n      ++++-----STARTING qNum LOOP-----+++++')
+            print('      qNum = ', qNum)
+            print('      firstRecPrecIdx = ', firstRecPrecIdx)
+            print('      lastRecPrecIdx = ', lastRecPrecIdx)
+            print('      pointer = ', pointer)
+            print('      sRL = ', sRL)
+
+            for sRL in range(len(STD_RECALL_LEVELS)):  # [11]
+                print('\n         ++++-----STARTING STD_RECALL_LEVELS LOOP-----+++++')
+                print('         STD_RECALL_LEVELS[sRL] = ', STD_RECALL_LEVELS[sRL])
+                print('         recPrec[pointer][8] = ', recPrec[pointer][8])
+
+                while (STD_RECALL_LEVELS[sRL] > recPrec[pointer][8]):
+                    print('         while (STD_RECALL_LEVELS[sRL] > recPrec[pointer][8]):')
+                    print('         STD_RECALL_LEVELS[sRL] = ', STD_RECALL_LEVELS[sRL])
+                    print('         recPrec[pointer][8] = ', recPrec[pointer][8])
+                    print()
+
+                    if pointer < lastRecPrecIdx:
+                        print('         pointer = ', pointer)
+                        print('         lastRecPrecIdx = ', lastRecPrecIdx)
+                        pointer += 1
+                        print('         pointer = ', pointer)
+                        print()
+                    else:
+                        break
+
+                if (sRL == 0) or (STD_RECALL_LEVELS[sRL] <
+                                  recPrec[pointer][8]):
+
+                    print('         if (sRL == 0) or (STD_RECALL_LEVELS[sRL] < recPrec[pointer][8]):')
+                    print('         sRL = ', sRL)
+                    print('         STD_RECALL_LEVELS[sRL] = ', STD_RECALL_LEVELS[sRL])
+                    print('         recPrec[pointer][8] = ', recPrec[pointer][8])
+
+                    print('         CHECKING: IndexError: list index out of range')
+
+                    print('         pointer = ', pointer)
+                    print('         lastRecPrecIdx = ', lastRecPrecIdx)
+                    print('         lastRecPrecIdx+1 = ', lastRecPrecIdx+1)
+                    print('         recPrec[pointer:lastRecPrecIdx+1] = recPrec[', pointer, ':', lastRecPrecIdx+1, '] = ', recPrec[pointer:lastRecPrecIdx+1])
+
+                    print()
+                    for z in range(pointer, lastRecPrecIdx+1):
+                        print('         recPrec[0][9] = recPrec[', z,'][9] = ', recPrec[z][9])
+
+                    maxPrec = pointer
+                    j = 0
+
+                    print('         maxPrec = ', maxPrec)
+                    print('         (maxPrec + numRowsPerQ + 1) = ', (maxPrec + numRowsPerQ - 1))
+                    print('         j = ', j)
+
+                    print('         for j in range(maxPrec, (maxPrec + numRowsPerQ - 1)):')
+
+#                    for j in range(1, len(recPrec[pointer+1:lastRecPrecIdx])):
+                    for j in range(maxPrec, (maxPrec + numRowsPerQ - 1)):
+                        print('            if recPrec[', j, '][9] < recPrec[', j + 1, '][9]')
+                        print('            recPrec[', j, '][9] = ', recPrec[j][9])
+                        print('            recPrec[', j + 1, '][9] = ', recPrec[j + 1][9])
+                        print()
+
+                        print('            maxPrec = ', maxPrec)
+                        print('            j = ', j)
+                        print('            j + 1 = ', j + 1)
+                        print()
+
+                        print('            CHECK IF - if recPrec[j][9] < recPrec[j + 1][9]:')
+
+                        if recPrec[j][9] < recPrec[j + 1][9]:
+#                            maxPrec = maxPrec + j
+                            maxPrec += 1
+                            print('               maxPrec = ', maxPrec)
+                        print()
+#                    pointer = maxPrec
+
+                    print('         maxPrec = ', maxPrec)
+                    print('         recPrec[maxPrec][9]) = ', recPrec[maxPrec][9])
+
+                    print('         pointer = ', pointer)
+                    print('         lastRecPrecIdx = ', lastRecPrecIdx)
+
+                    print('         sRL = ', sRL)
+                    print('         intPrecIdx = ', intPrecIdx)
+
+                    intPrec[intPrecIdx].append(recPrec[maxPrec][9])
+                    print('         intPrec[intPrecIdx].append(recPrec[maxPrec][9])')
+                    print('         intPrec[intPrecIdx][sRL] = ', intPrec[intPrecIdx][sRL])
+                    print('         intPrec[intPrecIdx] = ', intPrec[intPrecIdx])
+                    print('         intPrec = ', intPrec)
+
+                    print('         intPrec[intPrecIdx][sRL] = max(recPrec[pointer:lastRecPrecIdx][9])')
+#                    print('max(recPrec[pointer:lastRecPrecIdx][9]) = ', max(recPrec[pointer:lastRecPrecIdx][9]))
+                    print('         intPrec[intPrecIdx][sRL] = ', intPrec[intPrecIdx][sRL])
+
+                elif (sRL != 0) and (STD_RECALL_LEVELS[sRL] ==
+                                     recPrec[pointer][8]):
+
+                    print('         elif (sRL != 0) and (STD_RECALL_LEVELS[sRL] == recPrec[pointer][8]):')
+                    print('         sRL = ', sRL)
+                    print('         STD_RECALL_LEVELS[sRL] = ', STD_RECALL_LEVELS[sRL])
+                    print('         recPrec[pointer][8] = ', recPrec[pointer][8])
+
+                    print('         maxPrec = pointer')
+                    print('         maxPrec = ', maxPrec)
+                    print('         pointer = ', pointer)
+
+                    maxPrec = pointer
+                    j = 0
+                    print('         maxPrec = ', maxPrec)
+                    print('         j = ', j)
+
+                    print('         for j in range(1, len(recPrec[pointer+1:lastRecPrecIdx])):')
+                    for j in range(1, len(recPrec[pointer+1:lastRecPrecIdx])):
+                        print('            if recPrec[maxPrec][9] < recPrec[j][9]:')
+                        if recPrec[maxPrec][9] < recPrec[maxPrec + j][9]:
+                            maxPrec = maxPrec + j
+                            print('               maxPrec = ', maxPrec)
+                    pointer = maxPrec
+
+                    print('         maxPrec = ', maxPrec)
+                    print('         recPrec[maxPrec][9]) = ', recPrec[maxPrec][9])
+
+                    print('         pointer = ', pointer)
+                    print('         lastRecPrecIdx = ', lastRecPrecIdx)
+
+                    intPrec[intPrecIdx].append(recPrec[maxPrec][9])
+                    print('         intPrec[intPrecIdx].append(recPrec[maxPrec][9])')
+                    print('         intPrec[intPrecIdx][sRL] = ', intPrec[intPrecIdx][sRL])
+                    print('         intPrec[intPrecIdx] = ', intPrec[intPrecIdx])
+                    print('         intPrec = ', intPrec)
+
+                    print('         intPrec[intPrecIdx][sRL] = max(recPrec[pointer:lastRecPrecIdx][9])')
+                    print('         intPrec[intPrecIdx][sRL] = ', intPrec[intPrecIdx][sRL])
+
+                elif (sRL != 0) and (STD_RECALL_LEVELS[sRL] >
+                                     recPrec[pointer][8]):
+
+                    print('         elif (sRL != 0) and (STD_RECALL_LEVELS[sRL] > recPrec[pointer][8]):')
+                    print('         sRL = ', sRL)
+                    print('         STD_RECALL_LEVELS[sRL] = ', STD_RECALL_LEVELS[sRL])
+                    print('         recPrec[pointer][8] = ', recPrec[pointer][8])
+
+                    intPrec[intPrecIdx].append(recPrec[maxPrec][9])
+                    print('         intPrec[intPrecIdx].append(recPrec[maxPrec][9])')
+                    print('         intPrec[intPrecIdx][sRL] = ', intPrec[intPrecIdx][sRL])
+                    print('         intPrec[intPrecIdx] = ', intPrec[intPrecIdx])
+                    print('         intPrec = ', intPrec)
+
+                    print('         intPrec[intPrecIdx][sRL] = ', intPrec[intPrecIdx][sRL])
+                    print('         intPrec[intPrecIdx][sRL - 1] = ', intPrec[intPrecIdx][sRL - 1])
+                    print()
+
+            print('      intPrecIdx = ', intPrecIdx)
+            intPrecIdx += 1
+            print('      intPrecIdx = ', intPrecIdx)
+
+            print('      recPrecIdx = ', recPrecIdx)
+            recPrecIdx = pointer + 1
+            print('      recPrecIdx = ', recPrecIdx)
+
+    print()
+    for j in range(len(intPrec)):
+        print('intPrec[', j, '] = ', intPrec[j])
